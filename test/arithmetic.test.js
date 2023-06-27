@@ -330,4 +330,63 @@ describe('Arithmetic', function () {
                 });
         });
     });
+
+    describe('Logarithm', function () {
+        it('computes base-10 logarithm of an integer', function (done) {
+            request.get('/arithmetic?operation=log&operand1=100&operand2=10')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2 });
+                    done();
+                });
+        });
+        it('computes base-10 logarithm of a floating point number', function (done) {
+            request.get('/arithmetic?operation=log&operand1=0.01&operand2=10')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: -1.9999999999999996 });
+                    done();
+                });
+        });
+        it('computes base-10 logarithm of a negative integer as null (imaginary)', function (done) {
+            request.get('/arithmetic?operation=log&operand1=-100&operand2=10')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: null });
+                    done();
+                });
+        });
+        it('computes base-10 logarithm of a negative floating point number as null (imaginary)', function (done) {
+            request.get('/arithmetic?operation=log&operand1=-0.01&operand2=10')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: null });
+                    done();
+                });
+        });
+        it('computes base-10 logarithm of zero as null (imaginary)', function (done) {
+            request.get('/arithmetic?operation=log&operand1=0&operand2=10')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: null });
+                    done();
+                });
+        });
+        it('computes logarithm of a negative base as null (imaginary)', function (done) {
+            request.get('/arithmetic?operation=log&operand1=100&operand2=-10')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: null });
+                    done();
+                });
+        });
+        it('computes logarithm of a zero base as zero', function (done) {
+            request.get('/arithmetic?operation=log&operand1=100&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+    });
 });
